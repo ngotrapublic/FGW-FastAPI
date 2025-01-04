@@ -1,7 +1,6 @@
-from .init import curs
-from src.model.creature import Creature
-from error import Missing, Duplicate
-from sqlalchemy import exc
+# from .init import (curs, IntegrityError)
+# from src.model.creature import Creature
+# from error import Missing, Duplicate
 
 # curs.execute("""create table if not exists creature(
 #                 name text primary key,
@@ -10,71 +9,71 @@ from sqlalchemy import exc
 #                 description text,
 #                 aka text)""")
 
-def row_to_model(row: tuple) -> Creature:
-    name, country, area, description, aka = row
-    return Creature(name=name,
-        country=country,
-        area=area,
-        description=description,
-        aka=aka)
+# def row_to_model(row: tuple) -> Creature:
+#     name, country, area, description, aka = row
+#     return Creature(name=name,
+#         country=country,
+#         area=area,
+#         description=description,
+#         aka=aka)
 
-def model_to_dict(creature: Creature) -> dict:
-    return creature.model_dump()
+# def model_to_dict(creature: Creature) -> dict:
+#     return creature.model_dump()
 
-def get_one(name: str) -> Creature:
-    qry = "select * from creature where name=:name"
-    params = {"name": name}
-    curs.execute(qry, params)
-    row = curs.fetchone()
-    if row:
-        return row_to_model(row)
-    else:
-        raise Missing(msg=f"Creature {name} not found")
+# def get_one(name: str) -> Creature:
+#     qry = "select * from creature where name=:name"
+#     params = {"name": name}
+#     curs.execute(qry, params)
+#     row = curs.fetchone()
+#     if row:
+#         return row_to_model(row)
+#     else:
+#         raise Missing(msg=f"Creature {name} not found")
 
-def get_all() -> list[Creature]:
-    qry = "select * from creature"
-    curs.execute(qry)
-    return [row_to_model(row) for row in curs.fetchall()]
+# def get_all() -> list[Creature]:
+#     qry = "select * from creature"
+#     curs.execute(qry)
+#     return [row_to_model(row) for row in curs.fetchall()]
     
-def get_random_name() -> str:
-    qry = "select name from creature order by random() limit 1"
-    curs.execute(qry)
-    row = curs.fetchone()
-    name = row[0]
-    return name
+# def get_random_name() -> str:
+#     qry = "select name from creature order by random() limit 1"
+#     curs.execute(qry)
+#     row = curs.fetchone()
+#     name = row[0]
+#     return name
 
-def create(creature: Creature) -> Creature:
-    qry = """insert into creature
-        (name, country, area, description, aka)
-        values
-        (:name, :country, :area, :description, :aka)"""
-    params = model_to_dict(creature)
-    try:
-        curs.execute(qry, params)
-        return get_one(creature.name)
-    except exc.IntegrityError:
-        raise Duplicate(msg=
-            f"Creature {creature.name} already exists")
+# def create(creature: Creature) -> Creature:
+#     qry = """insert into creature
+#         (name, country, area, description, aka)
+#         values
+#         (:name, :country, :area, :description, :aka)"""
+#     params = model_to_dict(creature)
+#     try:
+#         curs.execute(qry, params)
+#         return get_one(creature.name)
+#     except IntegrityError:
+#         raise Duplicate(msg=
+#             f"Creature {creature.name} already exists")
 
-def modify(creature: Creature) -> Creature:
-    qry = """update creature set
-             name=:name,
-             country=:country,
-             area=:area,
-             description=:description,
-             aka=:aka
-             where name=:orig_name"""
-    params = model_to_dict(creature)
-    params["orig_name"] = creature.name
-    curs.execute(qry, params)
-    if curs.rowcount == 1:
-        return get_one(creature.name)
-    else:
-        raise Missing(msg=f"Creature {creature.name} not found")
+# def modify(creature: Creature) -> Creature:
+#     qry = """update creature set
+#              name=:name,
+#              country=:country,
+#              area=:area,
+#              description=:description,
+#              aka=:aka
+#              where name=:orig_name"""
+#     params = model_to_dict(creature)
+#     params["orig_name"] = creature.name
+#     curs.execute(qry, params)
+#     if curs.rowcount == 1:
+#         return get_one(creature.name)
+#     else:
+#         raise Missing(msg=f"Creature {creature.name} not found")
 
-def delete(name: str):
-    qry = "delete from creature where name = :name"
-    params = {"name": name}
-    curs.execute(qry, params)
-    if curs.rowcount != 1:
-        raise Missing(msg=f"Creature {name} not found")
+# def delete(name: str):
+#     qry = "delete from creature where name = :name"
+#     params = {"name": name}
+#     curs.execute(qry, params)
+#     if curs.rowcount != 1:
+#         raise Missing(msg=f"Creature {name} not found")

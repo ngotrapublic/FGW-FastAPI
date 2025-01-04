@@ -1,20 +1,20 @@
-from src.model.explorer import Explorer
+from src.data.schemas import ExplorerBase
 import src.data.explorer as data
 
-def get_all() -> list[Explorer]:
+def get_all() -> list[ExplorerBase]:
     return data.get_all()
 
-def get_one(name: str) -> Explorer | None:
+def get_one(name: str) -> ExplorerBase | None:
     return data.get_one(name)
 
-def create(explorer: Explorer) -> Explorer:
+def create(explorer: ExplorerBase) -> ExplorerBase:
     return data.create(explorer)
 
-def replace(explorer: Explorer) -> Explorer:
+def replace(explorer: ExplorerBase) -> ExplorerBase:
     return data.modify(explorer)
 
-def modify(explorer: Explorer) -> Explorer:
-    return data.modify(explorer)
+def modify(explorer_id: str, explorer: ExplorerBase) -> ExplorerBase:
+    return data.modify(explorer_id, explorer)
 
-def delete(name: str) -> bool:
-    return data.delete(name)
+def delete(explorer_id: str) -> bool:
+    return data.delete(explorer_id)
