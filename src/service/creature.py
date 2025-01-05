@@ -1,20 +1,20 @@
-from src.model.creature import Creature
+from src.data.schemas import CreatureBase
 import src.data.creature as data
 
-def get_all() -> list[Creature]:
+def get_all() -> list[CreatureBase]:
     return data.get_all()
 
-def get_one(name: str) -> Creature | None:
+def get_one(name: str) -> CreatureBase | None:
     return data.get_one(name)
 
-def create(creature: Creature) -> Creature:
+def create(creature: CreatureBase) -> CreatureBase:
     return data.create(creature)
 
-def replace(creature: Creature) -> Creature:
-    return data.modify(creature)
+def replace(creature_id: str, creature: CreatureBase) -> CreatureBase:
+    return data.modify(creature_id, creature)
 
-def modify(creature: Creature) -> Creature:
-    return data.modify(creature)
+def modify(creature_id: str, creature: CreatureBase) -> CreatureBase:
+    return data.modify(creature_id, creature)
 
-def delete(name: str) -> bool:
-    return data.delete(name)
+def delete(creature_id: str) -> bool:
+    return data.delete(creature_id)

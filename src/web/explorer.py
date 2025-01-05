@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from src.data.schemas import ExplorerBase
-from src.model.explorer import Explorer
 import src.service.explorer as service
 from error import Duplicate, Missing
 
