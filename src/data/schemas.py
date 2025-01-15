@@ -20,6 +20,7 @@ class CreatureBase(BaseModel):
     area: str
     description: str
     aka: str
+    explorer_id: int
 
 class CreatureCreate(CreatureBase):
     pass

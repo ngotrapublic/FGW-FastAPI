@@ -1,4 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from src.model.explorer import Explorer
 from src.data.init import Base
 
 class Creature(Base):
@@ -10,3 +12,5 @@ class Creature(Base):
     area = Column(String, index=True)
     description = Column(String, index=True)
     aka = Column(String, index=True)
+    explorer_id = Column(Integer, ForeignKey('explorer.id'))
+    explorer = relationship(Explorer)

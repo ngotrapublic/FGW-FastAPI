@@ -18,7 +18,7 @@ def get_one(name: str) -> CreatureBase:
 
 def create(creature: CreatureBase) -> CreatureBase:
     if not creature: return None
-    db_item = Creature(name = creature.name, country = creature.country, area = creature.area, description = creature.description, aka = creature.aka)
+    db_item = Creature(name = creature.name, country = creature.country, area = creature.area, description = creature.description, aka = creature.aka, explorer_id = creature.explorer_id)
     db = next(get_db())
     try:
         db.add(db_item)
@@ -26,8 +26,7 @@ def create(creature: CreatureBase) -> CreatureBase:
         db.refresh(db_item)
         return get_one(db_item.name)
     except exc.IntegrityError:
-        raise Duplicate(msg=
-            f"Creature {creature.name} already exists")
+        raise Duplicate(msg=f"Creature {creature.name} already exists")
 
 def modify(creature_id: str, creature: CreatureBase) -> CreatureBase:
     if not (creature_id and creature): return None
