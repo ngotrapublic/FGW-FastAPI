@@ -28,11 +28,10 @@ app.add_middleware(
 async def forward_request(service_url: str, method: str, path: str, body=None, headers=None):
     async with httpx.AsyncClient() as client:
         url = f"{service_url}{path}"
-        print(url, body)
         response = await client.request(method, url, json=body, headers=headers)
         return response
 
-@app.api_route("/{service}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
+@app.api_route("/gateway/{service}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"], tags=["ApiGateway"])
 async def gateway(service: str, request: Request, parameter: Optional[str] = ""):
     if service not in services:
         raise HTTPException(status_code=404, detail="Service not found")
