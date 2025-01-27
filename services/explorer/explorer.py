@@ -1,4 +1,4 @@
-import json
+
 import uvicorn
 from fastapi import FastAPI
 from src.web import explorer
@@ -8,9 +8,6 @@ from kafka import KafkaConsumer
 origins = [
     "http://localhost:8003",
 ]
-
-consumer = KafkaConsumer("my_topic", bootstrap_servers='localhost:9092',
-              api_version=(0,11,5))
 
 app = FastAPI()
 app.add_middleware(
@@ -22,6 +19,9 @@ app.add_middleware(
 )
 
 app.include_router(explorer.router, tags=["Explorer"])
+
+consumer = KafkaConsumer("my_topic", bootstrap_servers='localhost:9092',
+              api_version=(0,11,5))
 
 @app.get("/consume")
 def consume():

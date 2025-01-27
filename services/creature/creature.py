@@ -8,11 +8,7 @@ from kafka import KafkaProducer
 origins = [
     "http://localhost:8003",
 ]
-def json_serializer(data):
-    return json.dumps(data).encode('utf-8')
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
-              api_version=(0,11,5),
-              value_serializer = json_serializer)
+
 app = FastAPI(swagger_ui_parameters={"displayModelsExpandDepth": -1})
 app.add_middleware(
     CORSMiddleware,
@@ -24,6 +20,11 @@ app.add_middleware(
 
 app.include_router(creature.router, tags=["Creature"])
 
+def json_serializer(data):
+    return json.dumps(data).encode('utf-8')
+producer = KafkaProducer(bootstrap_servers=['localhost:9092'],
+              api_version=(0,11,5),
+              value_serializer = json_serializer)
 @app.post("/publish/{topic}")
 def publish(topic: str, message: str):
     producer.send(topic, message)
